@@ -1,0 +1,152 @@
+from lab_python_oop.rectangle import Rectangle
+from lab_python_oop.circle import Circle
+from lab_python_oop.square import Square
+from lab_python_oop.figure import Figure
+from lab_python_oop.color import FigureColor
+import math
+
+
+class Circle(Figure):
+    """
+    Класс «Круг» наследуется от класса «Геометрическая фигура».
+    """
+    FIGURE_TYPE = "Круг"
+
+    @classmethod
+    def get_figure_type(cls):
+        return cls.FIGURE_TYPE
+
+    def __init__(self, color_param, r_param):
+        """
+        Класс должен содержать конструктор по параметрам «радиус» и «цвет». В конструкторе создается объект класса «Цвет фигуры» для хранения цвета.
+        """
+        self.r = r_param
+        self.fc = FigureColor()
+        self.fc.colorproperty = color_param
+
+    def square(self):
+        """
+        Класс должен переопределять метод, вычисляющий площадь фигуры.
+        """
+        return math.pi*(self.r**2)
+
+    def __repr__(self):
+        return '{} {} цвета радиусом {} площадью {}.'.format(
+            Circle.get_figure_type(),
+            self.fc.colorproperty,
+            self.r,
+            self.square()
+        )
+
+
+class FigureColor:
+    """
+    Класс «Цвет фигуры»
+    """
+
+    def __init__(self):
+        self._color = None
+
+    @property
+    def colorproperty(self):
+        """
+        Get-аксессор
+        """
+        return self._color
+
+    @colorproperty.setter
+    def colorproperty(self, value):
+        """
+        Set-аксессор
+        """
+        self._color = value
+
+from abc import ABC, abstractmethod
+
+
+class Figure(ABC):
+    """
+    Абстрактный класс «Геометрическая фигура»
+    """
+    @abstractmethod
+    def square(self):
+        """
+        содержит виртуальный метод для вычисления площади фигуры.
+        """
+        pass
+
+from lab_python_oop.figure import Figure
+from lab_python_oop.color import FigureColor
+
+
+class Rectangle(Figure):
+    """
+    Класс «Прямоугольник» наследуется от класса «Геометрическая фигура».
+    """
+    FIGURE_TYPE = "Прямоугольник"
+
+    @classmethod
+    def get_figure_type(cls):
+        return cls.FIGURE_TYPE
+
+    def __init__(self, color_param, width_param, height_param):
+        """
+        Класс должен содержать конструктор по параметрам «ширина», «высота» и «цвет». В конструкторе создается объект класса «Цвет фигуры» для хранения цвета.
+        """
+        self.width = width_param
+        self.height = height_param
+        self.fc = FigureColor()
+        self.fc.colorproperty = color_param
+
+    def square(self):
+        """
+        Класс должен переопределять метод, вычисляющий площадь фигуры.
+        """
+        return self.width*self.height
+
+    def __repr__(self):
+        return '{} {} цвета шириной {} и высотой {} площадью {}.'.format(
+            Rectangle.get_figure_type(),
+            self.fc.colorproperty,
+            self.width,
+            self.height,
+            self.square()
+        )
+
+from lab_python_oop.rectangle import Rectangle
+
+
+class Square(Rectangle):
+    """
+    Класс «Квадрат» наследуется от класса «Прямоугольник».
+    """
+    FIGURE_TYPE = "Квадрат"
+
+    @classmethod
+    def get_figure_type(cls):
+        return cls.FIGURE_TYPE
+
+    def __init__(self, color_param, side_param):
+        """
+        Класс должен содержать конструктор по параметрам «сторона» и «цвет».
+        """
+        self.side = side_param
+        super().__init__(color_param, self.side, self.side)
+
+    def __repr__(self):
+        return '{} {} цвета со стороной {} площадью {}.'.format(
+            Square.get_figure_type(),
+            self.fc.colorproperty,
+            self.side,
+            self.square()
+        )    
+def main():
+    r = Rectangle("синего", 3, 2)
+    c = Circle("зеленого", 5)
+    s = Square("красного", 5)
+    print(r)
+    print(c)
+    print(s)
+
+if __name__ == "__main__":
+    main()
